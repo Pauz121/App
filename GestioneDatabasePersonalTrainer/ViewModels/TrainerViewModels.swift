@@ -21,7 +21,7 @@ final class TrainerDashboardViewModel: ObservableObject {
     func load() {
         Task<Void, Never>(priority: nil) {
             clients = await services.clientService.fetchClients(for: trainer.id)
-            appointments = await services.appointmentService.fetchAppointments(for: trainer.id)
+            appointments = await services.appointmentService.fetchAppointments(forTrainer: trainer.id)
             workoutPlans = await services.workoutService.fetchWorkoutPlans(for: trainer.id)
             progressEntries = services.database.progressEntries
             isLoadingInsights = true
@@ -142,7 +142,7 @@ final class AppointmentsViewModel: ObservableObject {
     }
 
     func load() {
-        Task<Void, Never>(priority: nil) { appointments = await service.fetchAppointments(for: trainer.id) }
+        Task<Void, Never>(priority: nil) { appointments = await service.fetchAppointments(forTrainer: trainer.id) }
     }
 
     func save(_ appointment: Appointment) {

@@ -31,7 +31,7 @@ final class ClientDashboardViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         Task<Void, Never>(priority: nil) {
-            appointments = await services.appointmentService.fetchAppointments(for: client.id)
+            appointments = await services.appointmentService.fetchAppointments(forClient: client.id)
             workoutPlans = await services.workoutService.fetchWorkoutPlans(forClient: client.id)
             nutritionPlans = await services.nutritionService.fetchNutritionPlans(forClient: client.id)
             progressEntries = await services.progressService.fetchProgressEntries(for: client.id)

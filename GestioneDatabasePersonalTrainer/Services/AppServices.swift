@@ -348,7 +348,7 @@ final class AppointmentService {
         self.supabase = supabase
     }
 
-    func fetchAppointments(for trainerID: UUID) async -> [Appointment] {
+    func fetchAppointments(forTrainer trainerID: UUID) async -> [Appointment] {
         guard AppConfiguration.isSupabaseConfigured else {
             return database.appointments.filter { $0.trainerID == trainerID }.sorted { $0.startTime < $1.startTime }
         }
@@ -360,7 +360,7 @@ final class AppointmentService {
         return rows.map(SupabaseMapper.appointment)
     }
 
-    func fetchAppointments(for clientID: UUID) async -> [Appointment] {
+    func fetchAppointments(forClient clientID: UUID) async -> [Appointment] {
         guard AppConfiguration.isSupabaseConfigured else {
             return database.appointments.filter { $0.clientID == clientID }.sorted { $0.startTime < $1.startTime }
         }
