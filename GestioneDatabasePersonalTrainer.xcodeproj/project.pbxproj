@@ -1,0 +1,516 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* GestioneDatabasePersonalTrainerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* GestioneDatabasePersonalTrainerApp.swift */; };
+		A10000000000000000000002 /* DomainModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* DomainModels.swift */; };
+		A10000000000000000000003 /* MockDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* MockDatabase.swift */; };
+		A10000000000000000000004 /* AppServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* AppServices.swift */; };
+		A10000000000000000000005 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* DesignSystem.swift */; };
+		A10000000000000000000006 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* Components.swift */; };
+		A10000000000000000000007 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* AuthViewModel.swift */; };
+		A10000000000000000000008 /* TrainerViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* TrainerViewModels.swift */; };
+		A10000000000000000000009 /* ClientViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* ClientViewModels.swift */; };
+		A1000000000000000000000A /* AuthViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000A /* AuthViews.swift */; };
+		A1000000000000000000000B /* TrainerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000B /* TrainerViews.swift */; };
+		A1000000000000000000000C /* TrainerForms.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000C /* TrainerForms.swift */; };
+		A1000000000000000000000D /* ClientViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* ClientViews.swift */; };
+		A1000000000000000000000F /* AccessCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000F /* AccessCodeGenerator.swift */; };
+		A10000000000000000000010 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* AppConfiguration.swift */; };
+		A10000000000000000000011 /* SupabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* SupabaseManager.swift */; };
+		A10000000000000000000012 /* SupabaseDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* SupabaseDTOs.swift */; };
+		A10000000000000000000013 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000013 /* HealthKitService.swift */; };
+		A10000000000000000000014 /* DailyEngagementServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000014 /* DailyEngagementServices.swift */; };
+		A10000000000000000000015 /* DailyEngagementViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000015 /* DailyEngagementViewModels.swift */; };
+		A10000000000000000000016 /* DailyEngagementComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000016 /* DailyEngagementComponents.swift */; };
+		A10000000000000000000017 /* DailyCheckInViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000017 /* DailyCheckInViews.swift */; };
+		A10000000000000000000018 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A20000000000000000000019 /* HealthKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* GestioneDatabasePersonalTrainerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestioneDatabasePersonalTrainerApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* DomainModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainModels.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* MockDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDatabase.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* AppServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppServices.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* TrainerViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainerViewModels.swift; sourceTree = "<group>"; };
+		A20000000000000000000009 /* ClientViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientViewModels.swift; sourceTree = "<group>"; };
+		A2000000000000000000000A /* AuthViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViews.swift; sourceTree = "<group>"; };
+		A2000000000000000000000B /* TrainerViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainerViews.swift; sourceTree = "<group>"; };
+		A2000000000000000000000C /* TrainerForms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainerForms.swift; sourceTree = "<group>"; };
+		A2000000000000000000000D /* ClientViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientViews.swift; sourceTree = "<group>"; };
+		A2000000000000000000000E /* GestioneDatabasePersonalTrainer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GestioneDatabasePersonalTrainer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000000000000000000000F /* AccessCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessCodeGenerator.swift; sourceTree = "<group>"; };
+		A20000000000000000000010 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
+		A20000000000000000000011 /* SupabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseManager.swift; sourceTree = "<group>"; };
+		A20000000000000000000012 /* SupabaseDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseDTOs.swift; sourceTree = "<group>"; };
+		A20000000000000000000013 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		A20000000000000000000014 /* DailyEngagementServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyEngagementServices.swift; sourceTree = "<group>"; };
+		A20000000000000000000015 /* DailyEngagementViewModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyEngagementViewModels.swift; sourceTree = "<group>"; };
+		A20000000000000000000016 /* DailyEngagementComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyEngagementComponents.swift; sourceTree = "<group>"; };
+		A20000000000000000000017 /* DailyCheckInViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCheckInViews.swift; sourceTree = "<group>"; };
+		A20000000000000000000018 /* GestioneDatabasePersonalTrainer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GestioneDatabasePersonalTrainer.entitlements; sourceTree = "<group>"; };
+		A20000000000000000000019 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A30000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000018 /* HealthKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A40000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000003 /* GestioneDatabasePersonalTrainer */,
+				A40000000000000000000002 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A40000000000000000000002 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000E /* GestioneDatabasePersonalTrainer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000003 /* GestioneDatabasePersonalTrainer */ = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000004 /* App */,
+				A40000000000000000000005 /* Models */,
+				A40000000000000000000006 /* ViewModels */,
+				A40000000000000000000007 /* Views */,
+				A4000000000000000000000C /* Services */,
+				A4000000000000000000000D /* MockData */,
+				A4000000000000000000000E /* DesignSystem */,
+				A4000000000000000000000F /* Utilities */,
+				A20000000000000000000018 /* GestioneDatabasePersonalTrainer.entitlements */,
+			);
+			path = GestioneDatabasePersonalTrainer;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000004 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000001 /* GestioneDatabasePersonalTrainerApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000005 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000002 /* DomainModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000006 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000007 /* AuthViewModel.swift */,
+				A20000000000000000000008 /* TrainerViewModels.swift */,
+				A20000000000000000000009 /* ClientViewModels.swift */,
+				A20000000000000000000015 /* DailyEngagementViewModels.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000008 /* Auth */,
+				A40000000000000000000009 /* Trainer */,
+				A4000000000000000000000A /* Client */,
+				A4000000000000000000000B /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000008 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000A /* AuthViews.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000009 /* Trainer */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000B /* TrainerViews.swift */,
+				A2000000000000000000000C /* TrainerForms.swift */,
+			);
+			path = Trainer;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000A /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000D /* ClientViews.swift */,
+				A20000000000000000000017 /* DailyCheckInViews.swift */,
+			);
+			path = Client;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000B /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000006 /* Components.swift */,
+				A20000000000000000000016 /* DailyEngagementComponents.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000004 /* AppServices.swift */,
+				A20000000000000000000011 /* SupabaseManager.swift */,
+				A20000000000000000000012 /* SupabaseDTOs.swift */,
+				A20000000000000000000013 /* HealthKitService.swift */,
+				A20000000000000000000014 /* DailyEngagementServices.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000D /* MockData */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000003 /* MockDatabase.swift */,
+			);
+			path = MockData;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000E /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000005 /* DesignSystem.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000F /* AccessCodeGenerator.swift */,
+				A20000000000000000000010 /* AppConfiguration.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A50000000000000000000001 /* GestioneDatabasePersonalTrainer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A80000000000000000000002 /* Build configuration list for PBXNativeTarget "GestioneDatabasePersonalTrainer" */;
+			buildPhases = (
+				A60000000000000000000001 /* Sources */,
+				A30000000000000000000001 /* Frameworks */,
+				A60000000000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GestioneDatabasePersonalTrainer;
+			productName = GestioneDatabasePersonalTrainer;
+			productReference = A2000000000000000000000E /* GestioneDatabasePersonalTrainer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A70000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1550;
+				LastUpgradeCheck = 1550;
+				TargetAttributes = {
+					A50000000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = A80000000000000000000001 /* Build configuration list for PBXProject "GestioneDatabasePersonalTrainer" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = it;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				it,
+				en,
+				Base,
+			);
+			mainGroup = A40000000000000000000001;
+			productRefGroup = A40000000000000000000002 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A50000000000000000000001 /* GestioneDatabasePersonalTrainer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A60000000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A60000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* GestioneDatabasePersonalTrainerApp.swift in Sources */,
+				A10000000000000000000002 /* DomainModels.swift in Sources */,
+				A10000000000000000000003 /* MockDatabase.swift in Sources */,
+				A10000000000000000000004 /* AppServices.swift in Sources */,
+				A10000000000000000000005 /* DesignSystem.swift in Sources */,
+				A10000000000000000000006 /* Components.swift in Sources */,
+				A10000000000000000000007 /* AuthViewModel.swift in Sources */,
+				A10000000000000000000008 /* TrainerViewModels.swift in Sources */,
+				A10000000000000000000009 /* ClientViewModels.swift in Sources */,
+				A1000000000000000000000A /* AuthViews.swift in Sources */,
+				A1000000000000000000000B /* TrainerViews.swift in Sources */,
+				A1000000000000000000000C /* TrainerForms.swift in Sources */,
+				A1000000000000000000000D /* ClientViews.swift in Sources */,
+				A1000000000000000000000F /* AccessCodeGenerator.swift in Sources */,
+				A10000000000000000000010 /* AppConfiguration.swift in Sources */,
+				A10000000000000000000011 /* SupabaseManager.swift in Sources */,
+				A10000000000000000000012 /* SupabaseDTOs.swift in Sources */,
+				A10000000000000000000013 /* HealthKitService.swift in Sources */,
+				A10000000000000000000014 /* DailyEngagementServices.swift in Sources */,
+				A10000000000000000000015 /* DailyEngagementViewModels.swift in Sources */,
+				A10000000000000000000016 /* DailyEngagementComponents.swift in Sources */,
+				A10000000000000000000017 /* DailyCheckInViews.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A90000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A90000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A90000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = GestioneDatabasePersonalTrainer/GestioneDatabasePersonalTrainer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Gestione Database PT";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Leggiamo solo i passi da Apple Salute per mostrare obiettivi giornalieri, streak e riepiloghi al tuo trainer.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.paoli.GestioneDatabasePersonalTrainer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A90000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = GestioneDatabasePersonalTrainer/GestioneDatabasePersonalTrainer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Gestione Database PT";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Leggiamo solo i passi da Apple Salute per mostrare obiettivi giornalieri, streak e riepiloghi al tuo trainer.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.paoli.GestioneDatabasePersonalTrainer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A80000000000000000000001 /* Build configuration list for PBXProject "GestioneDatabasePersonalTrainer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A90000000000000000000001 /* Debug */,
+				A90000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A80000000000000000000002 /* Build configuration list for PBXNativeTarget "GestioneDatabasePersonalTrainer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A90000000000000000000003 /* Debug */,
+				A90000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A70000000000000000000001 /* Project object */;
+}
