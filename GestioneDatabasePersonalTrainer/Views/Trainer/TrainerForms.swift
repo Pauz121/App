@@ -1,5 +1,7 @@
 import SwiftUI
 import UIKit
+import EventKit
+import UserNotifications
 
 // MARK: - T3 New/Edit Client View
 
@@ -406,7 +408,7 @@ struct AddAppointmentView: View {
                         onSave(appointment)
                         if addToCalendar, let client = clients.first(where: { $0.id == appointment.clientID }) {
                             Task {
-                                let success = await EventKitService.shared.addAppointment(appointment, clientName: client.fullName)
+                                let success = await TrainerCalendarService.shared.addAppointment(appointment, clientName: client.fullName)
                                 if !success { calendarAccessDenied = true; addToCalendar = false }
                             }
                         }
@@ -865,7 +867,7 @@ struct CreateWorkoutPlanView: View {
                             .onChange(of: enableNotification) { _, enabled in
                                 if enabled {
                                     Task {
-                                        let granted = await NotificationService.shared.requestPermission()
+                                        let granted = await TrainerNotificationService.shared.requestPermission()
                                         if !granted { enableNotification = false; notificationDenied = true }
                                     }
                                 }
@@ -906,7 +908,7 @@ struct CreateWorkoutPlanView: View {
                         if let client = clients.first(where: { $0.id == selectedClientID }) {
                             onCreate(client, name, goal)
                             if enableNotification {
-                                NotificationService.shared.scheduleWorkoutPlanExpiry(
+                                TrainerNotificationService.shared.scheduleWorkoutPlanExpiry(
                                     clientName: client.fullName,
                                     endDate: Date.daysFromNow(durationWeeks * 7),
                                     daysBefore: notifyDaysBefore
@@ -942,6 +944,74 @@ struct CreateWorkoutPlanView: View {
                 exercises = await catalogService?.fetchExerciseCatalog() ?? []
             }
         }
+    }
+}
+
+@MainActor
+private final class TrainerCalendarService {
+    static let shared = TrainerCalendarService()
+
+    private let store = EKEventStore()
+
+    private init() {}
+
+    private var isAuthorized: Bool {
+        EKEventStore.authorizationStatus(for: .event) == .fullAccess
+    }
+
+    func requestAccess() async -> Bool {
+        if isAuthorized { return true }
+        guard EKEventStore.authorizationStatus(for: .event) == .notDetermined else { return false }
+        return (try? await store.requestFullAccessToEvents()) ?? false
+    }
+
+    func addAppointment(_ appointment: Appointment, clientName: String) async -> Bool {
+        guard await requestAccess() else { return false }
+
+        let event = EKEvent(eventStore: store)
+        event.title = "\(appointment.sessionType.displayName) - \(clientName)"
+        event.startDate = appointment.startTime
+        event.endDate = appointment.endTime
+        event.calendar = store.defaultCalendarForNewEvents
+        if !appointment.notes.isEmpty { event.notes = appointment.notes }
+
+        return (try? store.save(event, span: .thisEvent)) != nil
+    }
+}
+
+private final class TrainerNotificationService {
+    static let shared = TrainerNotificationService()
+
+    private init() {}
+
+    func requestPermission() async -> Bool {
+        let center = UNUserNotificationCenter.current()
+        let settings = await center.notificationSettings()
+        if settings.authorizationStatus == .authorized { return true }
+        if settings.authorizationStatus == .denied { return false }
+        return (try? await center.requestAuthorization(options: [.alert, .badge, .sound])) ?? false
+    }
+
+    func scheduleWorkoutPlanExpiry(clientName: String, endDate: Date, daysBefore: Int) {
+        guard let triggerDate = Calendar.current.date(byAdding: .day, value: -daysBefore, to: endDate),
+              triggerDate > Date() else { return }
+
+        let center = UNUserNotificationCenter.current()
+        let safeClientName = clientName.replacingOccurrences(of: " ", with: "_")
+        let id = "trainer_plan_expiry_\(safeClientName)_\(daysBefore)"
+        center.removePendingNotificationRequests(withIdentifiers: [id])
+
+        let content = UNMutableNotificationContent()
+        content.title = "Scheda in scadenza"
+        content.body = "La scheda di \(clientName) terminera tra \(daysBefore == 1 ? "1 giorno" : "\(daysBefore) giorni")."
+        content.sound = .default
+
+        var components = Calendar.current.dateComponents([.year, .month, .day], from: triggerDate)
+        components.hour = 9
+        components.minute = 0
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
     }
 }
 
