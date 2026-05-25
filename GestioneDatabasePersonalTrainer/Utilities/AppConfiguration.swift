@@ -8,7 +8,7 @@ enum AppConfiguration {
     static let isDemoLoginEnabled = true
     static var useMockData = false
 
-    // Set to true during demo sessions — forces all services to use MockDatabase instead of Supabase
+    // Set to true during demo sessions - forces all services to use MockDatabase instead of Supabase.
     static var isDemoMode: Bool = false
 
     static var isSupabaseConfigured: Bool {
