@@ -84,14 +84,19 @@ struct DailyCheckInView: View {
             .animation(.easeInOut(duration: 0.3), value: currentStep)
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
+                VStack(alignment: .center, spacing: 18) {
                     SectionLabel(text: steps[currentStep].category)
+                        .frame(maxWidth: .infinity)
                     Text(steps[currentStep].title)
                         .font(.custom("Archivo-ExtraBold", size: 26))
                         .foregroundStyle(DesignSystem.Colors.txtPrimary)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
                     Text(steps[currentStep].hint)
                         .font(DesignSystem.Typography.labelMD())
                         .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
 
                     if currentStep == 4 {
                         ZStack(alignment: .topLeading) {
@@ -112,7 +117,7 @@ struct DailyCheckInView: View {
                             }
                         }
                     } else {
-                        EmojiRating(value: binding(for: steps[currentStep]))
+                        ScrollableEmojiRating(value: binding(for: steps[currentStep]))
                     }
 
                     if let error = viewModel.errorMessage {
@@ -124,7 +129,7 @@ struct DailyCheckInView: View {
                 .padding(20)
             }
 
-            AccentButton(title: currentStep == 4 ? "Invia check-in ✓" : "Continua ->", color: DesignSystem.Colors.limeDark) {
+            AccentButton(title: currentStep == 4 ? "Invia check ✓" : "Continua ->", color: DesignSystem.Colors.limeDark) {
                 if currentStep < 4 {
                     withAnimation(.easeInOut(duration: 0.22)) {
                         currentStep += 1
@@ -146,7 +151,7 @@ struct DailyCheckInView: View {
                 .scaleEffect(completionAnimated ? 1 : 0.75)
                 .shadow(color: DesignSystem.Colors.lime.opacity(0.32), radius: 22)
                 .overlay(Text("🎉").font(.system(size: 50)))
-            Text("Check-in fatto!")
+            Text("Check fatto!")
                 .font(.custom("Archivo-Black", size: 30))
                 .foregroundStyle(DesignSystem.Colors.txtPrimary)
             Text("Marco ricevera come stai andando. Continua cosi.")
@@ -203,32 +208,49 @@ private struct CheckInStep {
     let keyPath: ReferenceWritableKeyPath<DailyCheckInViewModel, Int>
 }
 
-private struct EmojiRating: View {
+private struct ScrollableEmojiRating: View {
     @Binding var value: Int
-    private let faces = ["😣", "😕", "😐", "🙂", "😄"]
+    private let options: [(score: Int, emoji: String, label: String)] = [
+        (1, "😣", "Pessima"),
+        (2, "😕", "Non bene"),
+        (3, "😐", "Nella media"),
+        (4, "🙂", "Bene"),
+        (5, "😄", "Ottimo")
+    ]
 
     var body: some View {
-        HStack(spacing: 9) {
-            ForEach(1...5, id: \.self) { score in
-                Button {
-                    withAnimation(.spring(response: 0.25, dampingFraction: 0.68)) {
-                        value = score
-                    }
-                } label: {
-                    Text(faces[score - 1])
-                        .font(.system(size: 28))
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(1, contentMode: .fit)
-                        .background(value == score ? DesignSystem.Colors.limeBg : DesignSystem.Colors.bgCard)
-                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+                ForEach(options, id: \.score) { option in
+                    let isSelected = value == option.score
+                    Button {
+                        withAnimation(.spring(response: 0.25, dampingFraction: 0.68)) {
+                            value = option.score
+                        }
+                    } label: {
+                        VStack(spacing: 8) {
+                            Text(option.emoji)
+                                .font(.system(size: 34))
+                            Text(option.label)
+                                .font(DesignSystem.Typography.labelSM())
+                                .foregroundStyle(isSelected ? DesignSystem.Colors.limeDark : DesignSystem.Colors.txtSecondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(width: 90, height: 100)
+                        .background(isSelected ? DesignSystem.Colors.limeBg : DesignSystem.Colors.bgCard)
+                        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(value == score ? DesignSystem.Colors.lime : DesignSystem.Colors.bgLine, lineWidth: value == score ? 2 : 1)
+                            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                .stroke(isSelected ? DesignSystem.Colors.lime : DesignSystem.Colors.bgLine, lineWidth: isSelected ? 2 : 1)
                         )
-                        .scaleEffect(value == score ? 1.05 : 1)
+                        .scaleEffect(isSelected ? 1.04 : 1)
+                        .shadow(color: isSelected ? DesignSystem.Colors.lime.opacity(0.22) : .clear, radius: 8)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
+            .padding(.horizontal, 4)
+            .padding(.vertical, 4)
         }
     }
 }

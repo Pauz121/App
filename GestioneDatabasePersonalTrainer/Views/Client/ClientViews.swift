@@ -203,7 +203,7 @@ struct ClientDashboardView: View {
                     .frame(width: 9, height: 9)
                     .shadow(color: DesignSystem.Colors.limeDark.opacity(0.45), radius: 7)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Check-in settimanale")
+                    Text("Check settimanale")
                         .font(.custom("Archivo-ExtraBold", size: 14))
                         .foregroundStyle(DesignSystem.Colors.txtPrimary)
                     Text("5 domande · scade domenica")
