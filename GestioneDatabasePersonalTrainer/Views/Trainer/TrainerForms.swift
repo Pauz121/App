@@ -251,9 +251,9 @@ struct AddMachineView: View {
                 if !catalog.isEmpty {
                     Section("Catalogo globale") {
                         Picker("Scegli dal catalogo", selection: $selectedCatalogID) {
-                            Text("Personalizzato").tag(Optional<UUID>.none)
+                            Text("Personalizzato").tag(nil as UUID?)
                             ForEach(catalog) { item in
-                                Text("\(item.name) - \(item.muscleGroup)").tag(Optional(item.id))
+                                Text("\(item.name) - \(item.muscleGroup)").tag(item.id as UUID?)
                             }
                         }
                         .onChange(of: selectedCatalogID) { _, newValue in
@@ -334,9 +334,9 @@ struct CreateWorkoutPlanView: View {
                 Section("Scheda") {
                     if !templates.isEmpty {
                         Picker("Template", selection: $selectedTemplateID) {
-                            Text("Nessun template").tag(Optional<UUID>.none)
+                            Text("Nessun template").tag(nil as UUID?)
                             ForEach(templates) { template in
-                                Text(template.name).tag(Optional(template.id))
+                                Text(template.name).tag(template.id as UUID?)
                             }
                         }
                         .onChange(of: selectedTemplateID) { _, newValue in
@@ -421,9 +421,9 @@ struct CreateNutritionPlanView: View {
                             .foregroundStyle(.secondary)
                     } else {
                         Picker("Pasto base", selection: $selectedMealTemplateID) {
-                            Text("Nessuno").tag(Optional<UUID>.none)
+                            Text("Nessuno").tag(nil as UUID?)
                             ForEach(mealTemplates) { template in
-                                Text(template.name).tag(Optional(template.id))
+                                Text(template.name).tag(template.id as UUID?)
                             }
                         }
                     }
