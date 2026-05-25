@@ -285,7 +285,7 @@ enum SupabaseMapper {
         let joinedAt = parseDateTime(dto.joinedAt) ?? Date()
         let trainerNotes = dto.notes ?? ""
 
-        Client(
+        return Client(
             id: id,
             trainerID: dto.trainerId,
             firstName: dto.firstName,
