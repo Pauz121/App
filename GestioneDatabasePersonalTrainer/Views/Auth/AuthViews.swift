@@ -3,38 +3,100 @@ import SwiftUI
 struct WelcomeView: View {
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading, spacing: AppSpacing.xl) {
-                Spacer()
-
-                VStack(alignment: .leading, spacing: AppSpacing.md) {
-                    Image(systemName: "figure.strengthtraining.traditional")
-                        .font(.system(size: 46, weight: .bold))
-                        .foregroundStyle(AppColors.accent)
-
-                    Text("Gestione Database Personal Trainer")
-                        .font(AppTypography.hero)
-                        .foregroundStyle(AppColors.textPrimary)
-                        .lineLimit(4)
-                        .minimumScaleFactor(0.78)
-
-                    Text("Clienti, schede, nutrizione, appuntamenti e progressi in un unico gestionale nativo iOS.")
-                        .font(AppTypography.body)
-                        .foregroundStyle(AppColors.textSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
+            ZStack {
+                DesignSystem.Colors.bgMain.ignoresSafeArea()
+                VStack(spacing: 0) {
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.indigo.opacity(0.08), Color.clear],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 260)
+                    .ignoresSafeArea()
+                    Spacer()
                 }
 
-                NavigationLink {
-                    LoginSelectionView()
-                } label: {
-                    Label("Inizia", systemImage: "arrow.right")
-                }
-                .buttonStyle(PrimaryButtonStyle())
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        HStack(spacing: 10) {
+                            Image(systemName: "figure.strengthtraining.traditional")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundStyle(.white)
+                                .frame(width: 44, height: 44)
+                                .background(
+                                    LinearGradient(colors: [DesignSystem.Colors.indigo, DesignSystem.Colors.teal], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                )
+                                .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
+                                .shadow(color: DesignSystem.Colors.indigo.opacity(0.3), radius: 8, x: 0, y: 4)
+                            Text("FitConsole")
+                                .font(.custom("Archivo-ExtraBold", size: 16))
+                                .foregroundStyle(DesignSystem.Colors.txtPrimary)
+                        }
+                        Spacer()
+                        Text("v2.0")
+                            .font(DesignSystem.Typography.labelSM())
+                            .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(DesignSystem.Colors.bgCard)
+                            .clipShape(Capsule())
+                            .overlay(Capsule().stroke(DesignSystem.Colors.bgLine, lineWidth: 1))
+                    }
+                    .padding(.horizontal, AppSpacing.lg)
+                    .padding(.top, 20)
 
-                Spacer()
+                    Spacer()
+
+                    VStack(alignment: .leading, spacing: AppSpacing.md) {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                featureChip("🏋️", "Schede")
+                                featureChip("🥗", "Piani")
+                                featureChip("📅", "Agenda")
+                                featureChip("📊", "Progressi")
+                                featureChip("💬", "Chat")
+                            }
+                            .padding(.horizontal, AppSpacing.lg)
+                        }
+
+                        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                            Text("Il tuo gestionale\nfitness, nativo iOS.")
+                                .font(.custom("Archivo-ExtraBold", size: 36))
+                                .foregroundStyle(DesignSystem.Colors.txtPrimary)
+                                .lineSpacing(3)
+                            Text("Clienti, schede, nutrizione e appuntamenti in un'unica app professionale per personal trainer.")
+                                .font(DesignSystem.Typography.bodyMD())
+                                .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .padding(.horizontal, AppSpacing.lg)
+
+                        NavigationLink {
+                            LoginSelectionView()
+                        } label: {
+                            Label("Inizia ora", systemImage: "arrow.right")
+                        }
+                        .buttonStyle(PrimaryButtonStyle())
+                        .padding(.horizontal, AppSpacing.lg)
+                        .padding(.bottom, 44)
+                    }
+                }
             }
-            .padding(AppSpacing.lg)
-            .appScreen()
         }
+    }
+
+    private func featureChip(_ icon: String, _ label: String) -> some View {
+        HStack(spacing: 5) {
+            Text(icon).font(.system(size: 13))
+            Text(label)
+                .font(DesignSystem.Typography.labelSM())
+                .foregroundStyle(DesignSystem.Colors.txtPrimary)
+        }
+        .padding(.horizontal, 11)
+        .padding(.vertical, 7)
+        .background(DesignSystem.Colors.bgCard)
+        .clipShape(Capsule())
+        .overlay(Capsule().stroke(DesignSystem.Colors.bgLine, lineWidth: 1))
     }
 }
 
@@ -42,45 +104,70 @@ struct LoginSelectionView: View {
     @EnvironmentObject private var authViewModel: AuthViewModel
 
     var body: some View {
-        VStack(spacing: AppSpacing.lg) {
-            VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                Text("Accesso")
-                    .font(AppTypography.title)
-                Text("Scegli l'area da aprire. Supabase gestisce login, ruoli e sessione.")
-                    .font(AppTypography.body)
-                    .foregroundStyle(AppColors.textSecondary)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+        ScrollView {
+            VStack(spacing: AppSpacing.md) {
+                VStack(spacing: AppSpacing.sm) {
+                    Text("Come vuoi accedere?")
+                        .font(DesignSystem.Typography.titleLG())
+                        .foregroundStyle(DesignSystem.Colors.txtPrimary)
+                    Text("Scegli il tuo ruolo per continuare")
+                        .font(DesignSystem.Typography.bodyMD())
+                        .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 4)
 
-            NavigationLink {
-                TrainerPlanSelectionView()
-            } label: {
-                AccessChoiceCard(title: "Sono un Personal Trainer", subtitle: "Scegli piano, registrati o accedi alla dashboard", icon: "person.crop.rectangle.stack")
-            }
+                NavigationLink {
+                    TrainerPlanSelectionView()
+                } label: {
+                    AccessChoiceCard(
+                        title: "Personal Trainer",
+                        subtitle: "Gestisci clienti, schede, nutrizione e appuntamenti",
+                        icon: "person.crop.rectangle.stack",
+                        gradient: [DesignSystem.Colors.indigo, DesignSystem.Colors.teal]
+                    )
+                }
 
-            NavigationLink {
-                ClientAccessCodeView()
-            } label: {
-                AccessChoiceCard(title: "Sono un Cliente", subtitle: "Registrati con codice monouso o accedi con email", icon: "person.text.rectangle")
-            }
+                NavigationLink {
+                    ClientAccessCodeView()
+                } label: {
+                    AccessChoiceCard(
+                        title: "Cliente",
+                        subtitle: "Segui i tuoi allenamenti e il piano del tuo trainer",
+                        icon: "figure.run",
+                        gradient: [DesignSystem.Colors.amber, DesignSystem.Colors.limeDark]
+                    )
+                }
 
-            if AppConfiguration.isDemoLoginEnabled {
-                SectionCard(title: "Demo sviluppo", icon: "hammer") {
-                    VStack(spacing: AppSpacing.sm) {
-                        SecondaryButton(title: "Entra come Trainer Demo", systemImage: "person.crop.rectangle") {
-                            authViewModel.loginTrainerDemo()
-                        }
-                        SecondaryButton(title: "Entra come Cliente Demo", systemImage: "person") {
-                            authViewModel.loginClientDemo()
+                if AppConfiguration.isDemoLoginEnabled {
+                    FitCard {
+                        VStack(spacing: AppSpacing.sm) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "hammer.fill")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                                Text("DEMO SVILUPPO")
+                                    .font(DesignSystem.Typography.labelSM())
+                                    .tracking(1.4)
+                                    .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                                Spacer()
+                            }
+                            SecondaryButton(title: "Trainer Demo", systemImage: "person.crop.rectangle") {
+                                authViewModel.loginTrainerDemo()
+                            }
+                            SecondaryButton(title: "Cliente Demo", systemImage: "person") {
+                                authViewModel.loginClientDemo()
+                            }
                         }
                     }
                 }
-            }
 
-            Spacer()
+                Spacer()
+            }
+            .padding(AppSpacing.lg)
         }
-        .padding(AppSpacing.lg)
-        .navigationTitle("Login")
+        .navigationTitle("Accesso")
+        .navigationBarTitleDisplayMode(.inline)
         .appScreen()
     }
 }
@@ -89,30 +176,36 @@ private struct AccessChoiceCard: View {
     let title: String
     let subtitle: String
     let icon: String
+    let gradient: [Color]
 
     var body: some View {
         HStack(spacing: AppSpacing.md) {
             Image(systemName: icon)
-                .font(.title2)
-                .foregroundStyle(AppColors.accent)
-                .frame(width: 46, height: 46)
-                .background(AppColors.accent.opacity(0.15))
-                .clipShape(RoundedRectangle(cornerRadius: AppRadius.sm, style: .continuous))
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 52, height: 52)
+                .background(
+                    LinearGradient(colors: gradient, startPoint: .topLeading, endPoint: .bottomTrailing)
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .shadow(color: gradient.first?.opacity(0.28) ?? .clear, radius: 8, x: 0, y: 4)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(.headline)
+                    .font(DesignSystem.Typography.labelMD())
                     .foregroundStyle(AppColors.textPrimary)
                 Text(subtitle)
-                    .font(.caption)
+                    .font(DesignSystem.Typography.bodySM())
                     .foregroundStyle(AppColors.textSecondary)
                     .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Spacer()
 
             Image(systemName: "chevron.right")
-                .foregroundStyle(AppColors.textSecondary)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(AppColors.textMuted)
         }
         .appCard()
     }
@@ -145,16 +238,18 @@ struct TrainerPlanSelectionView: View {
                     } label: {
                         HStack(spacing: AppSpacing.md) {
                             Image(systemName: selectedPlan == plan.slug ? "checkmark.circle.fill" : "circle")
-                                .foregroundStyle(selectedPlan == plan.slug ? AppColors.success : AppColors.textSecondary)
+                                .foregroundStyle(selectedPlan == plan.slug ? DesignSystem.Colors.indigo : AppColors.textSecondary)
+                                .font(.title3)
                             VStack(alignment: .leading, spacing: 5) {
                                 Text(plan.name)
-                                    .font(.headline)
+                                    .font(DesignSystem.Typography.labelMD())
+                                    .foregroundStyle(DesignSystem.Colors.txtPrimary)
                                 Text(plan.description)
-                                    .font(.caption)
+                                    .font(DesignSystem.Typography.bodySM())
                                     .foregroundStyle(AppColors.textSecondary)
-                                Text("\(plan.price) - \(plan.clients)")
-                                    .font(.caption.weight(.semibold))
-                                    .foregroundStyle(AppColors.accent)
+                                Text("\(plan.price) · \(plan.clients)")
+                                    .font(DesignSystem.Typography.labelSM())
+                                    .foregroundStyle(DesignSystem.Colors.indigo)
                             }
                             Spacer()
                         }
@@ -182,6 +277,7 @@ struct TrainerPlanSelectionView: View {
             .padding(AppSpacing.lg)
         }
         .navigationTitle("Piani")
+        .navigationBarTitleDisplayMode(.inline)
         .appScreen()
     }
 }
@@ -191,40 +287,60 @@ struct TrainerRegistrationView: View {
     let selectedPlanSlug: String
 
     var body: some View {
-        VStack(spacing: AppSpacing.lg) {
-            SectionCard(title: "Registrazione Trainer", icon: "person.badge.plus") {
-                VStack(spacing: AppSpacing.md) {
-                    TextField("Nome", text: $authViewModel.firstName)
-                        .textFieldStyle(.roundedBorder)
-                    TextField("Cognome", text: $authViewModel.lastName)
-                        .textFieldStyle(.roundedBorder)
-                    TextField("Nome attivita/studio", text: $authViewModel.businessName)
-                        .textFieldStyle(.roundedBorder)
-                    TextField("Email", text: $authViewModel.email)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .textFieldStyle(.roundedBorder)
-                    SecureField("Password", text: $authViewModel.password)
-                        .textFieldStyle(.roundedBorder)
-
-                    if let message = authViewModel.errorMessage {
-                        Text(message)
-                            .font(.caption)
-                            .foregroundStyle(AppColors.warning)
-                    }
-
-                    PrimaryButton(title: authViewModel.isLoading ? "Creo account..." : "Crea account trainer", systemImage: "checkmark.seal") {
-                        authViewModel.selectedPlanSlug = selectedPlanSlug
-                        authViewModel.registerTrainer()
-                    }
-                    .disabled(authViewModel.firstName.isEmpty || authViewModel.lastName.isEmpty || authViewModel.businessName.isEmpty)
+        ScrollView {
+            VStack(spacing: AppSpacing.lg) {
+                VStack(spacing: AppSpacing.sm) {
+                    Image(systemName: "person.badge.plus")
+                        .font(.system(size: 28, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 64, height: 64)
+                        .background(
+                            LinearGradient(colors: [DesignSystem.Colors.indigo, DesignSystem.Colors.teal], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        .shadow(color: DesignSystem.Colors.indigo.opacity(0.3), radius: 12, x: 0, y: 5)
+                    Text("Crea il tuo account")
+                        .font(DesignSystem.Typography.titleLG())
+                        .foregroundStyle(DesignSystem.Colors.txtPrimary)
+                    Text(selectedPlanSlug.uppercased())
+                        .font(DesignSystem.Typography.labelSM())
+                        .foregroundStyle(DesignSystem.Colors.indigo)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(DesignSystem.Colors.indigoBg)
+                        .clipShape(Capsule())
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.top, 4)
+
+                SectionLabel(text: "Dati personali")
+                FitInputField(label: "Nome", text: $authViewModel.firstName)
+                FitInputField(label: "Cognome", text: $authViewModel.lastName)
+                FitInputField(label: "Nome studio o attività", text: $authViewModel.businessName)
+
+                SectionLabel(text: "Credenziali")
+                FitInputField(label: "Email", text: $authViewModel.email, keyboardType: .emailAddress, autoCapitalize: .never)
+                FitInputField(label: "Password", text: $authViewModel.password, secure: true)
+
+                if let message = authViewModel.errorMessage {
+                    Text(message)
+                        .font(DesignSystem.Typography.labelSM())
+                        .foregroundStyle(AppColors.dangerRed)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+
+                AccentButton(title: authViewModel.isLoading ? "Creo account…" : "Crea account", color: DesignSystem.Colors.indigo) {
+                    authViewModel.selectedPlanSlug = selectedPlanSlug
+                    authViewModel.registerTrainer()
+                }
+                .disabled(authViewModel.firstName.isEmpty || authViewModel.lastName.isEmpty || authViewModel.businessName.isEmpty)
+
+                Spacer()
             }
-            Spacer()
+            .padding(AppSpacing.lg)
         }
-        .padding(AppSpacing.lg)
         .navigationTitle("Registrazione")
+        .navigationBarTitleDisplayMode(.inline)
         .appScreen()
     }
 }
@@ -233,105 +349,143 @@ struct TrainerLoginView: View {
     @EnvironmentObject private var authViewModel: AuthViewModel
 
     var body: some View {
-        VStack(spacing: AppSpacing.lg) {
-            SectionCard(title: "Login Trainer", icon: "lock.shield") {
-                VStack(spacing: AppSpacing.md) {
-                    TextField("Email", text: $authViewModel.email)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .textFieldStyle(.roundedBorder)
+        ScrollView {
+            VStack(spacing: AppSpacing.lg) {
+                VStack(spacing: AppSpacing.sm) {
+                    Image(systemName: "person.crop.rectangle.stack")
+                        .font(.system(size: 30, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 68, height: 68)
+                        .background(
+                            LinearGradient(colors: [DesignSystem.Colors.indigo, DesignSystem.Colors.teal], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                        .shadow(color: DesignSystem.Colors.indigo.opacity(0.35), radius: 14, x: 0, y: 6)
+                    Text("Accesso Trainer")
+                        .font(DesignSystem.Typography.titleLG())
+                        .foregroundStyle(DesignSystem.Colors.txtPrimary)
+                    Text("Inserisci le tue credenziali per accedere")
+                        .font(DesignSystem.Typography.bodyMD())
+                        .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                        .multilineTextAlignment(.center)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.top, 8)
 
-                    SecureField("Password", text: $authViewModel.password)
-                        .textFieldStyle(.roundedBorder)
+                VStack(spacing: 10) {
+                    FitInputField(label: "Email", text: $authViewModel.email, keyboardType: .emailAddress, autoCapitalize: .never)
+                    FitInputField(label: "Password", text: $authViewModel.password, secure: true)
+                }
 
-                    if let message = authViewModel.errorMessage {
-                        Text(message)
-                            .font(.caption)
-                            .foregroundStyle(AppColors.warning)
-                    }
+                if let message = authViewModel.errorMessage {
+                    Text(message)
+                        .font(DesignSystem.Typography.labelSM())
+                        .foregroundStyle(AppColors.dangerRed)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
 
-                    PrimaryButton(title: authViewModel.isLoading ? "Accesso..." : "Entra come trainer", systemImage: "arrow.right.circle") {
-                        authViewModel.loginTrainer()
-                    }
+                AccentButton(title: authViewModel.isLoading ? "Accesso in corso…" : "Entra", color: DesignSystem.Colors.indigo) {
+                    authViewModel.loginTrainer()
+                }
 
-                    if AppConfiguration.isDemoLoginEnabled {
-                        SecondaryButton(title: "Entra come Trainer Demo", systemImage: "person.crop.rectangle") {
-                            authViewModel.loginTrainerDemo()
-                        }
+                if AppConfiguration.isDemoLoginEnabled {
+                    SecondaryButton(title: "Trainer Demo", systemImage: "person.crop.rectangle") {
+                        authViewModel.loginTrainerDemo()
                     }
                 }
-            }
 
-            Spacer()
+                Spacer()
+            }
+            .padding(AppSpacing.lg)
         }
-        .padding(AppSpacing.lg)
         .navigationTitle("Trainer")
+        .navigationBarTitleDisplayMode(.inline)
         .appScreen()
     }
 }
 
 struct ClientAccessCodeView: View {
     @EnvironmentObject private var authViewModel: AuthViewModel
+    @State private var mode: ClientLoginMode = .code
+
+    private enum ClientLoginMode: CaseIterable, Hashable {
+        case code, email
+    }
 
     var body: some View {
         ScrollView {
             VStack(spacing: AppSpacing.lg) {
-                SectionCard(title: "Registrazione con codice", icon: "key.horizontal") {
-                    VStack(spacing: AppSpacing.md) {
-                        TextField("PT-XXXXXXXX", text: $authViewModel.accessCode)
-                            .textInputAutocapitalization(.characters)
-                            .autocorrectionDisabled()
-                            .font(.system(.body, design: .monospaced))
-                            .textFieldStyle(.roundedBorder)
-
-                        TextField("Email", text: $authViewModel.email)
-                            .keyboardType(.emailAddress)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                            .textFieldStyle(.roundedBorder)
-
-                        SecureField("Password", text: $authViewModel.password)
-                            .textFieldStyle(.roundedBorder)
-
-                        if let message = authViewModel.errorMessage {
-                            Text(message)
-                                .font(.caption)
-                                .foregroundStyle(AppColors.warning)
-                        }
-
-                        PrimaryButton(title: authViewModel.isLoading ? "Registro..." : "Registrati con codice", systemImage: "person.badge.plus") {
-                            authViewModel.registerClientWithInviteCode()
-                        }
-                    }
+                VStack(spacing: AppSpacing.sm) {
+                    Image(systemName: "figure.run")
+                        .font(.system(size: 30, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 68, height: 68)
+                        .background(
+                            LinearGradient(colors: [DesignSystem.Colors.amber, DesignSystem.Colors.limeDark], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                        .shadow(color: DesignSystem.Colors.amber.opacity(0.35), radius: 14, x: 0, y: 6)
+                    Text("Accesso Cliente")
+                        .font(DesignSystem.Typography.titleLG())
+                        .foregroundStyle(DesignSystem.Colors.txtPrimary)
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.top, 8)
 
-                SectionCard(title: "Login cliente", icon: "lock") {
-                    VStack(spacing: AppSpacing.md) {
-                        TextField("Email", text: $authViewModel.email)
-                            .keyboardType(.emailAddress)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                            .textFieldStyle(.roundedBorder)
+                SegmentedPicker(
+                    options: ClientLoginMode.allCases,
+                    selection: $mode,
+                    title: { $0 == .code ? "Codice invito" : "Email & Password" },
+                    accent: DesignSystem.Colors.limeDark
+                )
 
-                        SecureField("Password", text: $authViewModel.password)
-                            .textFieldStyle(.roundedBorder)
+                if mode == .code {
+                    VStack(spacing: 10) {
+                        FitInputField(label: "Codice accesso (PT-XXXXXXXX)", text: $authViewModel.accessCode, autoCapitalize: .characters)
+                        FitInputField(label: "Email", text: $authViewModel.email, keyboardType: .emailAddress, autoCapitalize: .never)
+                        FitInputField(label: "Password", text: $authViewModel.password, secure: true)
+                    }
 
-                        SecondaryButton(title: "Accedi con email", systemImage: "arrow.right.circle") {
-                            authViewModel.loginClientWithEmail()
-                        }
+                    if let message = authViewModel.errorMessage {
+                        Text(message)
+                            .font(DesignSystem.Typography.labelSM())
+                            .foregroundStyle(AppColors.dangerRed)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+
+                    AccentButton(title: authViewModel.isLoading ? "Registrazione…" : "Registrati con codice", color: DesignSystem.Colors.limeDark) {
+                        authViewModel.registerClientWithInviteCode()
+                    }
+                } else {
+                    VStack(spacing: 10) {
+                        FitInputField(label: "Email", text: $authViewModel.email, keyboardType: .emailAddress, autoCapitalize: .never)
+                        FitInputField(label: "Password", text: $authViewModel.password, secure: true)
+                    }
+
+                    if let message = authViewModel.errorMessage {
+                        Text(message)
+                            .font(DesignSystem.Typography.labelSM())
+                            .foregroundStyle(AppColors.dangerRed)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+
+                    AccentButton(title: authViewModel.isLoading ? "Accesso…" : "Accedi", color: DesignSystem.Colors.limeDark) {
+                        authViewModel.loginClientWithEmail()
                     }
                 }
 
                 if AppConfiguration.isDemoLoginEnabled {
-                    SecondaryButton(title: "Entra come Cliente Demo", systemImage: "person") {
+                    SecondaryButton(title: "Cliente Demo", systemImage: "person") {
                         authViewModel.loginClientDemo()
                     }
                 }
+
+                Spacer()
             }
             .padding(AppSpacing.lg)
         }
         .navigationTitle("Cliente")
+        .navigationBarTitleDisplayMode(.inline)
         .appScreen()
     }
 }

@@ -163,32 +163,46 @@ struct AddAppointmentView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var appointment: Appointment
     @State private var showClientPicker = false
-    @State private var showStartPicker = false
-    @State private var showEndPicker = false
+    @State private var appointmentDate: Date
+    @State private var showDatePicker = false
+    @State private var selectedStartSlot: Date?
     @State private var repeatEnabled = false
     @State private var selectedWeekdays: Set<Int> = []
     @State private var repeatEndDate = Calendar.current.date(byAdding: .month, value: 1, to: Date()) ?? Date()
     @State private var showRepeatEndPicker = false
+    @State private var addToCalendar = false
+    @State private var calendarAccessDenied = false
     let clients: [Client]
+    let existingAppointments: [Appointment]
     let onSave: (Appointment) -> Void
 
     private let weekdayLabels = ["L", "M", "M", "G", "V", "S", "D"]
 
-    init(trainer: Trainer, clients: [Client], appointment: Appointment? = nil, onSave: @escaping (Appointment) -> Void) {
+    init(trainer: Trainer, clients: [Client], appointment: Appointment? = nil, existingAppointments: [Appointment] = [], onSave: @escaping (Appointment) -> Void) {
         self.clients = clients
-        let firstClientID = clients.first?.id ?? UUID()
-        _appointment = State(initialValue: appointment ?? Appointment(
-            id: UUID(),
-            trainerID: trainer.id,
-            clientID: firstClientID,
-            date: Date(),
-            startTime: .daysFromNow(0, hour: 10),
-            endTime: .daysFromNow(0, hour: 11),
-            sessionType: .workout,
-            notes: "",
-            status: .scheduled
-        ))
+        self.existingAppointments = existingAppointments
         self.onSave = onSave
+        if let existing = appointment {
+            _appointment = State(initialValue: existing)
+            _appointmentDate = State(initialValue: Calendar.current.startOfDay(for: existing.startTime))
+            _selectedStartSlot = State(initialValue: existing.startTime)
+        } else {
+            let firstClientID = clients.first?.id ?? UUID()
+            let defaultAppt = Appointment(
+                id: UUID(),
+                trainerID: trainer.id,
+                clientID: firstClientID,
+                date: Date(),
+                startTime: .daysFromNow(0, hour: 10),
+                endTime: .daysFromNow(0, hour: 11),
+                sessionType: .workout,
+                notes: "",
+                status: .scheduled
+            )
+            _appointment = State(initialValue: defaultAppt)
+            _appointmentDate = State(initialValue: Calendar.current.startOfDay(for: Date()))
+            _selectedStartSlot = State(initialValue: nil)
+        }
     }
 
     var body: some View {
@@ -199,7 +213,6 @@ struct AddAppointmentView: View {
                         .font(DesignSystem.Typography.titleLG())
                         .foregroundStyle(DesignSystem.Colors.txtPrimary)
 
-                    // Client picker
                     Button { showClientPicker = true } label: {
                         FitCard {
                             HStack {
@@ -228,48 +241,51 @@ struct AddAppointmentView: View {
                     }
                     .buttonStyle(.plain)
 
-                    // Type chips
                     HStack(spacing: 10) {
-                        typeChip(
-                            label: "🏋️ Allenamento",
-                            active: appointment.sessionType == .workout,
-                            activeColor: DesignSystem.Colors.indigo
-                        ) {
+                        typeChip(label: "🏋️ Allenamento", active: appointment.sessionType == .workout, activeColor: DesignSystem.Colors.indigo) {
                             withAnimation(.easeInOut(duration: 0.16)) {
                                 appointment.sessionType = .workout
+                                selectedStartSlot = nil
                             }
                         }
-                        typeChip(
-                            label: "📍 Check-in Studio",
-                            active: appointment.sessionType == .checkin,
-                            activeColor: DesignSystem.Colors.amber
-                        ) {
+                        typeChip(label: "📍 Check Studio", active: appointment.sessionType == .checkin, activeColor: DesignSystem.Colors.amber) {
                             withAnimation(.easeInOut(duration: 0.16)) {
                                 appointment.sessionType = .checkin
+                                selectedStartSlot = nil
                             }
                         }
                     }
 
-                    // Date/time fields
-                    SectionLabel(text: "Orario")
-                    dateRow(label: "Inizio", date: $appointment.startTime, showPicker: $showStartPicker)
-                    dateRow(label: "Fine", date: $appointment.endTime, showPicker: $showEndPicker)
+                    SectionLabel(text: "Giorno")
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.2)) { showDatePicker.toggle() }
+                    } label: {
+                        FitCard {
+                            HStack {
+                                Text("Data")
+                                    .font(DesignSystem.Typography.bodyMD())
+                                    .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                                Spacer()
+                                Text(appointmentDate.formatted(.dateTime.day().month(.wide).year()))
+                                    .font(.custom("Archivo-ExtraBold", size: 15))
+                                    .foregroundStyle(DesignSystem.Colors.txtPrimary)
+                                Image(systemName: showDatePicker ? "chevron.up" : "chevron.down")
+                                    .font(.caption.weight(.bold))
+                                    .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
 
-                    if showStartPicker {
-                        DatePicker("", selection: $appointment.startTime)
+                    if showDatePicker {
+                        DatePicker("", selection: $appointmentDate, displayedComponents: .date)
                             .datePickerStyle(.graphical)
                             .tint(DesignSystem.Colors.indigo)
-                            .padding(.horizontal, 4)
+                            .onChange(of: appointmentDate) { _, _ in selectedStartSlot = nil }
                     }
 
-                    if showEndPicker {
-                        DatePicker("", selection: $appointment.endTime)
-                            .datePickerStyle(.graphical)
-                            .tint(DesignSystem.Colors.indigo)
-                            .padding(.horizontal, 4)
-                    }
+                    timeSlotsSection
 
-                    // Repeat (only for workout type)
                     if appointment.sessionType == .workout {
                         FitCard {
                             VStack(alignment: .leading, spacing: 12) {
@@ -293,11 +309,7 @@ struct AddAppointmentView: View {
                                                 let selected = selectedWeekdays.contains(index)
                                                 Button {
                                                     withAnimation(.easeInOut(duration: 0.14)) {
-                                                        if selected {
-                                                            selectedWeekdays.remove(index)
-                                                        } else {
-                                                            selectedWeekdays.insert(index)
-                                                        }
+                                                        if selected { selectedWeekdays.remove(index) } else { selectedWeekdays.insert(index) }
                                                     }
                                                 } label: {
                                                     Text(weekdayLabels[index])
@@ -307,10 +319,7 @@ struct AddAppointmentView: View {
                                                         .frame(height: 34)
                                                         .background(selected ? DesignSystem.Colors.indigo : DesignSystem.Colors.bgCard)
                                                         .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
-                                                        .overlay(
-                                                            RoundedRectangle(cornerRadius: 9, style: .continuous)
-                                                                .stroke(selected ? DesignSystem.Colors.indigo : DesignSystem.Colors.bgLine, lineWidth: 1)
-                                                        )
+                                                        .overlay(RoundedRectangle(cornerRadius: 9, style: .continuous).stroke(selected ? DesignSystem.Colors.indigo : DesignSystem.Colors.bgLine, lineWidth: 1))
                                                 }
                                                 .buttonStyle(.plain)
                                             }
@@ -345,24 +354,34 @@ struct AddAppointmentView: View {
                         }
                     }
 
-                    // Status picker
-                    SectionLabel(text: "Stato")
                     FitCard {
-                        HStack {
-                            Text("Stato")
-                                .font(DesignSystem.Typography.labelMD())
-                                .foregroundStyle(DesignSystem.Colors.txtSecondary)
-                            Spacer()
-                            Picker("", selection: $appointment.status) {
-                                ForEach(AppointmentStatus.allCases) { status in
-                                    Text(status.rawValue).tag(status)
+                        VStack(spacing: 8) {
+                            Toggle(isOn: $addToCalendar.animation(.easeInOut(duration: 0.2))) {
+                                HStack(spacing: 10) {
+                                    FitIconChip(systemName: "calendar.badge.plus", color: DesignSystem.Colors.teal, background: DesignSystem.Colors.tealBg, size: 30)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text("Aggiungi al Calendario iPhone")
+                                            .font(.custom("Archivo-ExtraBold", size: 14))
+                                            .foregroundStyle(DesignSystem.Colors.txtPrimary)
+                                        Text("Sincronizza con l'app Calendario")
+                                            .font(DesignSystem.Typography.labelSM())
+                                            .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                                    }
                                 }
                             }
-                            .tint(DesignSystem.Colors.indigo)
+                            .tint(DesignSystem.Colors.teal)
+
+                            if calendarAccessDenied {
+                                Button("Abilita accesso al Calendario nelle Impostazioni") {
+                                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                                }
+                                .font(DesignSystem.Typography.labelSM())
+                                .foregroundStyle(AppColors.dangerRed)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
                     }
 
-                    // Notes
                     SectionLabel(text: "Note")
                     ZStack(alignment: .topLeading) {
                         TextEditor(text: $appointment.notes)
@@ -385,9 +404,15 @@ struct AddAppointmentView: View {
                     PrimaryButton(title: "Salva appuntamento") {
                         appointment.date = appointment.startTime
                         onSave(appointment)
+                        if addToCalendar, let client = clients.first(where: { $0.id == appointment.clientID }) {
+                            Task {
+                                let success = await EventKitService.shared.addAppointment(appointment, clientName: client.fullName)
+                                if !success { calendarAccessDenied = true; addToCalendar = false }
+                            }
+                        }
                         dismiss()
                     }
-                    .disabled(clients.isEmpty)
+                    .disabled(clients.isEmpty || selectedStartSlot == nil)
                 }
                 .padding(20)
             }
@@ -404,13 +429,77 @@ struct AddAppointmentView: View {
                         dismiss()
                     }
                     .foregroundStyle(DesignSystem.Colors.indigo)
-                    .disabled(clients.isEmpty)
+                    .disabled(clients.isEmpty || selectedStartSlot == nil)
                 }
             }
             .sheet(isPresented: $showClientPicker) {
                 ClientPickerSheet(clients: clients, selectedID: $appointment.clientID)
             }
             .appScreen()
+        }
+    }
+
+    @ViewBuilder
+    private var timeSlotsSection: some View {
+        let slots = availableSlots()
+        let durationLabel = appointment.sessionType == .checkin ? "30 min" : "60 min"
+        SectionLabel(text: "Orario disponibile · \(durationLabel)")
+
+        if slots.isEmpty {
+            FitCard {
+                HStack(spacing: 12) {
+                    Image(systemName: "calendar.badge.exclamationmark")
+                        .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                    Text("Nessun orario disponibile per questa data")
+                        .font(DesignSystem.Typography.bodyMD())
+                        .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                }
+            }
+        } else {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 8)], spacing: 8) {
+                ForEach(slots, id: \.self) { slot in
+                    let isSelected = selectedStartSlot.map {
+                        Calendar.current.isDate($0, equalTo: slot, toGranularity: .minute)
+                    } ?? false
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.16)) {
+                            selectedStartSlot = slot
+                            appointment.startTime = slot
+                            let dur = appointment.sessionType == .checkin ? 30 : 60
+                            appointment.endTime = Calendar.current.date(byAdding: .minute, value: dur, to: slot) ?? slot
+                            appointment.date = slot
+                        }
+                    } label: {
+                        Text(slot.formattedTime())
+                            .font(DesignSystem.Typography.labelMD())
+                            .foregroundStyle(isSelected ? .white : DesignSystem.Colors.txtPrimary)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 42)
+                            .background(isSelected ? DesignSystem.Colors.indigo : DesignSystem.Colors.bgCard)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .stroke(isSelected ? DesignSystem.Colors.indigo : DesignSystem.Colors.bgLine, lineWidth: isSelected ? 2 : 1)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    private func availableSlots() -> [Date] {
+        let cal = Calendar.current
+        let dayStart = cal.startOfDay(for: appointmentDate)
+        let duration = appointment.sessionType == .checkin ? 30 : 60
+        return stride(from: 7 * 60, to: 21 * 60, by: 30).compactMap { minuteOffset -> Date? in
+            guard let slotStart = cal.date(byAdding: .minute, value: minuteOffset, to: dayStart),
+                  let slotEnd = cal.date(byAdding: .minute, value: duration, to: slotStart) else { return nil }
+            let dayApps = existingAppointments.filter {
+                cal.isDate($0.startTime, inSameDayAs: dayStart) && $0.id != appointment.id
+            }
+            let hasConflict = dayApps.contains { slotStart < $0.endTime && slotEnd > $0.startTime }
+            return hasConflict ? nil : slotStart
         }
     }
 
@@ -424,27 +513,6 @@ struct AddAppointmentView: View {
                 .background(active ? activeColor : DesignSystem.Colors.bgCard)
                 .clipShape(Capsule())
                 .overlay(Capsule().stroke(active ? activeColor : DesignSystem.Colors.bgLine, lineWidth: 1))
-        }
-        .buttonStyle(.plain)
-    }
-
-    private func dateRow(label: String, date: Binding<Date>, showPicker: Binding<Bool>) -> some View {
-        Button {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                showPicker.wrappedValue.toggle()
-            }
-        } label: {
-            FitCard {
-                HStack {
-                    Text(label)
-                        .font(DesignSystem.Typography.bodyMD())
-                        .foregroundStyle(DesignSystem.Colors.txtSecondary)
-                    Spacer()
-                    Text(date.wrappedValue.formatted(.dateTime.day().month().hour().minute()))
-                        .font(.custom("Archivo-ExtraBold", size: 16))
-                        .foregroundStyle(DesignSystem.Colors.txtPrimary)
-                }
-            }
         }
         .buttonStyle(.plain)
     }
@@ -666,6 +734,9 @@ struct CreateWorkoutPlanView: View {
     @State private var name = "Ipertrofia 4 settimane"
     @State private var goal = "Aumento massa magra"
     @State private var durationWeeks = 4
+    @State private var enableNotification = false
+    @State private var notifyDaysBefore = 3
+    @State private var notificationDenied = false
     let clients: [Client]
     let catalogService: CatalogService?
     let onCreate: (Client, String, String) -> Void
@@ -774,9 +845,73 @@ struct CreateWorkoutPlanView: View {
                         }
                     }
 
+                    SectionLabel(text: "Notifica scadenza")
+                    FitCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Toggle(isOn: $enableNotification.animation(.easeInOut(duration: 0.2))) {
+                                HStack(spacing: 10) {
+                                    FitIconChip(systemName: "bell.badge.fill", color: DesignSystem.Colors.amber, background: DesignSystem.Colors.amberBg, size: 30)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text("Avviso scadenza scheda")
+                                            .font(.custom("Archivo-ExtraBold", size: 14))
+                                            .foregroundStyle(DesignSystem.Colors.txtPrimary)
+                                        Text("Notifica prima della fine")
+                                            .font(DesignSystem.Typography.labelSM())
+                                            .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                                    }
+                                }
+                            }
+                            .tint(DesignSystem.Colors.amber)
+                            .onChange(of: enableNotification) { _, enabled in
+                                if enabled {
+                                    Task {
+                                        let granted = await NotificationService.shared.requestPermission()
+                                        if !granted { enableNotification = false; notificationDenied = true }
+                                    }
+                                }
+                            }
+
+                            if enableNotification {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Anticipo notifica")
+                                        .font(DesignSystem.Typography.labelSM())
+                                        .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                                    HStack(spacing: 8) {
+                                        ForEach([1, 3, 5, 7], id: \.self) { days in
+                                            Button { notifyDaysBefore = days } label: {
+                                                Text(days == 7 ? "1 sett." : days == 1 ? "1 giorno" : "\(days) giorni")
+                                                    .font(DesignSystem.Typography.labelSM())
+                                                    .foregroundStyle(notifyDaysBefore == days ? .white : DesignSystem.Colors.txtPrimary)
+                                                    .frame(maxWidth: .infinity)
+                                                    .frame(height: 36)
+                                                    .background(notifyDaysBefore == days ? DesignSystem.Colors.amber : DesignSystem.Colors.bgCard)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(notifyDaysBefore == days ? DesignSystem.Colors.amber : DesignSystem.Colors.bgLine, lineWidth: 1))
+                                            }
+                                            .buttonStyle(.plain)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .alert("Notifiche disabilitate", isPresented: $notificationDenied) {
+                        Button("Annulla", role: .cancel) {}
+                        Button("Impostazioni") { UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!) }
+                    } message: {
+                        Text("Abilita le notifiche nelle Impostazioni per ricevere avvisi sulla scadenza delle schede.")
+                    }
+
                     AccentButton(title: "Pubblica al cliente", color: DesignSystem.Colors.indigo) {
                         if let client = clients.first(where: { $0.id == selectedClientID }) {
                             onCreate(client, name, goal)
+                            if enableNotification {
+                                NotificationService.shared.scheduleWorkoutPlanExpiry(
+                                    clientName: client.fullName,
+                                    endDate: Date.daysFromNow(durationWeeks * 7),
+                                    daysBefore: notifyDaysBefore
+                                )
+                            }
                         }
                         dismiss()
                     }

@@ -477,7 +477,7 @@ struct ClientDetailView: View {
     private var feedbackTab: some View {
         VStack(spacing: 12) {
             FitCard {
-                Text("I check-in settimanali salvati verranno mostrati qui con le metriche energia, sonno, fame e stress.")
+                Text("I check settimanali salvati verranno mostrati qui con le metriche energia, sonno, fame e stress.")
                     .font(DesignSystem.Typography.bodyMD())
                     .foregroundStyle(DesignSystem.Colors.txtSecondary)
             }
@@ -591,12 +591,12 @@ struct AppointmentsCalendarView: View {
                 }
             }
             .sheet(isPresented: $showingAdd) {
-                AddAppointmentView(trainer: trainer, clients: clients) { appointment in
+                AddAppointmentView(trainer: trainer, clients: clients, existingAppointments: viewModel.appointments) { appointment in
                     viewModel.save(appointment)
                 }
             }
             .sheet(item: $editingAppointment) { appointment in
-                AddAppointmentView(trainer: trainer, clients: clients, appointment: appointment) { appointment in
+                AddAppointmentView(trainer: trainer, clients: clients, appointment: appointment, existingAppointments: viewModel.appointments) { appointment in
                     viewModel.save(appointment)
                 }
             }
@@ -670,7 +670,7 @@ struct AppointmentsCalendarView: View {
                     Text(clientName(for: appointment.clientID))
                         .font(.custom("Archivo-ExtraBold", size: 15))
                         .foregroundStyle(DesignSystem.Colors.txtPrimary)
-                    Text(appointment.sessionType.rawValue)
+                    Text(appointment.sessionType.displayName)
                         .font(DesignSystem.Typography.bodySM())
                         .foregroundStyle(DesignSystem.Colors.txtSecondary)
                 }
@@ -882,7 +882,7 @@ private struct FeedbackOverlaySheet: View {
             Text("Feedback di \(client.firstName)")
                 .font(DesignSystem.Typography.titleLG())
                 .foregroundStyle(DesignSystem.Colors.txtPrimary)
-            Text("Check-in settimanali")
+            Text("Check settimanali")
                 .font(DesignSystem.Typography.labelMD())
                 .foregroundStyle(DesignSystem.Colors.txtSecondary)
             FitCard {

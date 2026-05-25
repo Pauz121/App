@@ -2,25 +2,25 @@ import SwiftUI
 
 enum DesignSystem {
     enum Colors {
-        static let bgMain = Color(hex: "FAF8F3")
-        static let bgCard = Color(hex: "FFFEFB")
-        static let bgLine = Color(hex: "ECE8DF")
+        static let bgMain = Color(hex: "F3F4FA")
+        static let bgCard = Color(hex: "FFFFFF")
+        static let bgLine = Color(hex: "E4E6F0")
 
         static let txtPrimary = Color(hex: "1A1D21")
         static let txtSecondary = Color(hex: "6B7280")
 
-        static let lime = Color(hex: "A3C940")
-        static let limeDark = Color(hex: "6F8F1E")
-        static let limeBg = Color(hex: "EEF4DC")
+        static let lime = Color(hex: "C2E224")
+        static let limeDark = Color(hex: "80B800")
+        static let limeBg = Color(hex: "EEF7C8")
 
-        static let indigo = Color(hex: "5B6CE0")
-        static let indigoBg = Color(hex: "E9ECFB")
+        static let indigo = Color(hex: "4C5CE1")
+        static let indigoBg = Color(hex: "E3E6FF")
 
-        static let amber = Color(hex: "E8954A")
-        static let amberBg = Color(hex: "FBEEE0")
-        static let teal = Color(hex: "3FB8A0")
-        static let tealBg = Color(hex: "E1F4EF")
-        static let trend = Color(hex: "2FA36B")
+        static let amber = Color(hex: "FF8A2B")
+        static let amberBg = Color(hex: "FFF0D4")
+        static let teal = Color(hex: "00C4A8")
+        static let tealBg = Color(hex: "CCF5EE")
+        static let trend = Color(hex: "18C76B")
     }
 
     enum Spacing {
@@ -68,7 +68,7 @@ enum AppColors {
     static let primaryBlackPressed = Color(hex: "0D0F12")
 
     static let successGreen = DesignSystem.Colors.teal
-    static let dangerRed = Color(hex: "E57373")
+    static let dangerRed = Color(hex: "FF4545")
     static let warningYellow = DesignSystem.Colors.amber
     static let infoBlue = DesignSystem.Colors.indigo
     static let energyOrange = DesignSystem.Colors.amber

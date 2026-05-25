@@ -280,7 +280,7 @@ enum StreakType: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .checkIn: return "Check-in"
+        case .checkIn: return "Check"
         case .steps: return "Passi"
         case .workoutWeek: return "Allenamenti"
         }
@@ -333,6 +333,15 @@ struct AccessCode: Identifiable, Codable, Hashable {
     var clientID: UUID
     var createdAt: Date
     var isActive: Bool
+}
+
+extension SessionType {
+    var displayName: String {
+        switch self {
+        case .checkin: return "Check Studio"
+        default: return rawValue
+        }
+    }
 }
 
 extension Date {

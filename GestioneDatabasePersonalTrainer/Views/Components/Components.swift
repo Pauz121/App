@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct FitCard<Content: View>: View {
     var background: Color = DesignSystem.Colors.bgCard
@@ -26,7 +27,7 @@ struct SectionLabel: View {
     let text: String
 
     var body: some View {
-        Text("// \(text.uppercased())")
+        Text(text.uppercased())
             .font(DesignSystem.Typography.sectionLabel())
             .tracking(1.8)
             .foregroundStyle(DesignSystem.Colors.txtSecondary)
@@ -74,7 +75,7 @@ struct StatusPill: View {
     private var title: String {
         switch status {
         case .active: return "Attivo"
-        case .checkin: return "Check-in"
+        case .checkin: return "Check"
         case .inactive(let days): return "\(days)gg"
         }
     }
@@ -380,6 +381,36 @@ struct SecondaryButton: View {
         }
         .buttonStyle(SecondaryButtonStyle())
         .disabled(isLoading)
+    }
+}
+
+struct FitInputField: View {
+    let label: String
+    @Binding var text: String
+    var keyboardType: UIKeyboardType = .default
+    var secure: Bool = false
+    var autoCapitalize: TextInputAutocapitalization = .sentences
+
+    var body: some View {
+        FitCard {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(label)
+                    .font(DesignSystem.Typography.labelSM())
+                    .foregroundStyle(DesignSystem.Colors.txtSecondary)
+                Group {
+                    if secure {
+                        SecureField("", text: $text)
+                    } else {
+                        TextField("", text: $text)
+                            .keyboardType(keyboardType)
+                            .textInputAutocapitalization(autoCapitalize)
+                            .autocorrectionDisabled()
+                    }
+                }
+                .font(DesignSystem.Typography.bodyMD())
+                .foregroundStyle(DesignSystem.Colors.txtPrimary)
+            }
+        }
     }
 }
 
