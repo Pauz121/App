@@ -6,8 +6,10 @@ enum AppConfiguration {
     static let supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVianRueHdxcmt4a3R0d2xvY2Z6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTg4NTgsImV4cCI6MjA5NDQzNDg1OH0.YwgCd47xT9bqsRm3uo1gMuXXj1dRSab4kdAccDzBKGY"
 
     static let isDemoLoginEnabled = true
+    static var useMockData = false
 
     static var isSupabaseConfigured: Bool {
+        !useMockData &&
         supabaseURL.contains(".supabase.co") &&
         !supabaseURL.contains("YOUR_PROJECT_REF") &&
         !supabaseAnonKey.contains("YOUR_SUPABASE_ANON_KEY")

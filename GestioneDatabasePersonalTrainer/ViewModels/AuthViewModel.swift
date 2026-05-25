@@ -38,6 +38,7 @@ final class AuthViewModel: ObservableObject {
             isLoading = true
             defer { isLoading = false }
             do {
+                AppConfiguration.useMockData = false
                 session = .trainer(try await authService.loginTrainer(email: email, password: password))
                 errorMessage = nil
             } catch {
@@ -51,6 +52,7 @@ final class AuthViewModel: ObservableObject {
             isLoading = true
             defer { isLoading = false }
             do {
+                AppConfiguration.useMockData = true
                 session = .client(try await authService.loginClient(accessCode: accessCode))
                 errorMessage = nil
             } catch {
@@ -64,6 +66,7 @@ final class AuthViewModel: ObservableObject {
             isLoading = true
             defer { isLoading = false }
             do {
+                AppConfiguration.useMockData = false
                 session = .client(try await authService.loginClient(email: email, password: password))
                 errorMessage = nil
             } catch {
@@ -77,6 +80,7 @@ final class AuthViewModel: ObservableObject {
             isLoading = true
             defer { isLoading = false }
             do {
+                AppConfiguration.useMockData = false
                 session = .trainer(try await authService.registerTrainer(
                     email: email,
                     password: password,
@@ -97,6 +101,7 @@ final class AuthViewModel: ObservableObject {
             isLoading = true
             defer { isLoading = false }
             do {
+                AppConfiguration.useMockData = false
                 session = .client(try await authService.registerClientWithInviteCode(code: accessCode, email: email, password: password))
                 errorMessage = nil
             } catch {
@@ -107,12 +112,14 @@ final class AuthViewModel: ObservableObject {
 
     func loginTrainerDemo() {
         isLoading = false
+        AppConfiguration.useMockData = true
         errorMessage = nil
         session = .trainer(authService.demoTrainer())
     }
 
     func loginClientDemo() {
         isLoading = false
+        AppConfiguration.useMockData = true
         do {
             session = .client(try authService.demoClient())
             errorMessage = nil
@@ -124,6 +131,7 @@ final class AuthViewModel: ObservableObject {
     func logout() {
         Task<Void, Never>(priority: nil) {
             await authService.logout()
+            AppConfiguration.useMockData = false
             session = nil
             errorMessage = nil
         }
